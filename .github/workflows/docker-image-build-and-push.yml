@@ -29,8 +29,8 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run:
-        docker build . -t rcdemocontainerreg.azurecr.io/flask-container-action:latest
+        docker build . -t rcdemocontainerreg.azurecr.io/rcapps/flask-container-action:latest
     - run: 
         echo "----------------- Done building Docker Image.. Now Pushing.... -----------------"
     - run:
-        docker push rcdemocontainerreg.azurecr.io/flask-container-action:latest
+        docker push rcdemocontainerreg.azurecr.io/rcapps/flask-container-action:latest

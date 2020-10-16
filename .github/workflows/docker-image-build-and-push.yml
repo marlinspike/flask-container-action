@@ -30,7 +30,16 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run:
         docker build . -t rcdemocontainerreg.azurecr.io/rcapps/flask-container-action:latest
-    - run: 
-        echo "----------------- Done building Docker Image.. Now Pushing.... -----------------"
     - run:
         docker push rcdemocontainerreg.azurecr.io/rcapps/flask-container-action:latest
+
+    - name: 'Deploy to Azure Container Instances'
+      uses: 'azure/aci-deploy@v1'
+      with:
+        resource-group: Demo
+        dns-name-label: flaskdemo.eastus.azurecontainer.io
+        image: rcdemocontainerreg.azurecr.io/rcapps/flask-container-action:latest
+        registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        name: flask-container-action
+        location: 'east us'

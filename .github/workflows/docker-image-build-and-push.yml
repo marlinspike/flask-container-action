@@ -25,5 +25,7 @@ jobs:
         username: ${{ secrets.ACR_USER }}
         password: ${{ secrets.ACR_PWD }}
     - run: |
+        echo "----------------- Building Docker Image -----------------"
         docker build . -t rcDemoContainerReg.azurecr.io/flask-container-action:${{ github.sha }}
+        echo "----------------- Done building Docker Image -----------------"
         docker push rcDemoContainerReg.azurecr.io/flask-container-action:${{ github.sha }}

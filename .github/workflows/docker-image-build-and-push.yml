@@ -26,11 +26,13 @@ jobs:
     - uses: azure/docker-login@v1
       with:
         login-server: rcdemocontainerreg.azurecr.io # default: index.docker.io
-        username: ${{ secrets.ACR_USER }}
-        password: ${{ secrets.ACR_PWD }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
+        echo "------------------ Registry -----------------------------"
+        echo ${{ secrets.REGISTRY_USERNAME }}
         echo "----------------- Building Docker Image -----------------"
-        docker build . -t rcDemoContainerReg.azurecr.io/flask-container-action:${{ github.sha }}
+        docker build . -t rcDemoContainerReg.azurecr.io/flask-container-action:latest
         echo "----------------- Done building Docker Image -----------------"
-        docker push rcDemoContainerReg.azurecr.io/flask-container-action:${{ github.sha }}
+        docker push rcDemoContainerReg.azurecr.io/flask-container-action:latest

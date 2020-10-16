@@ -1,0 +1,29 @@
+name: Docker Image CI
+
+env:
+  IMAGE_NAME: flask-container-action
+  IMAGE_TAG: latest
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v2
+    #- name: Build the Docker image
+      #run: docker build . --file Dockerfile --tag '${{ IMAGE_NAME }}:latest'
+      
+    - uses: azure/docker-login@v1
+      with:
+        login-server: 'rcdemocontainerreg.azurecr.io' # default: index.docker.io
+        username: 'rcDemoContainerReg'
+        password: 'licYo80EqHQpEfktt/KPc0uUFjrvHkqe'
+    - run: |
+        docker build . -t rcDemoContainerReg.azurecr.io/${{ IMAGE_NAME }}:latest
+        docker push rcDemoContainerReg.azurecr.io/${{ IMAGE_NAME }}:latest

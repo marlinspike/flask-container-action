@@ -15,6 +15,10 @@ jobs:
   build:
     runs-on: ubuntu-16.04
     steps:
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZ_CREDS }}
+    
     - uses: actions/checkout@v2
     #- name: Build the Docker image
       #run: docker build . --file Dockerfile --tag '${{ IMAGE_NAME }}:latest'
@@ -24,6 +28,7 @@ jobs:
         login-server: rcdemocontainerreg.azurecr.io # default: index.docker.io
         username: ${{ secrets.ACR_USER }}
         password: ${{ secrets.ACR_PWD }}
+
     - run: |
         echo "----------------- Building Docker Image -----------------"
         docker build . -t rcDemoContainerReg.azurecr.io/flask-container-action:${{ github.sha }}

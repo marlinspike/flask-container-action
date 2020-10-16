@@ -37,7 +37,6 @@ jobs:
       uses: 'azure/aci-deploy@v1'
       with:
         resource-group: Demo
-        dns-name-label: flaskdemo.eastus.azurecontainer.io
         image: rcdemocontainerreg.azurecr.io/rcapps/flask-container-action:latest
         registry-username: ${{ secrets.REGISTRY_USERNAME }}
         registry-password: ${{ secrets.REGISTRY_PASSWORD }}

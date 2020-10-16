@@ -26,8 +26,8 @@ jobs:
     - uses: azure/docker-login@v1
       with:
         login-server: rcdemocontainerreg.azurecr.io # default: index.docker.io
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
+        username: rcDemoContainerReg
+        password: gmsXLK7AiqdFfi8FifDU72Yh7r+SWbbM
 
     - run: |
         echo "------------------ Registry -----------------------------"

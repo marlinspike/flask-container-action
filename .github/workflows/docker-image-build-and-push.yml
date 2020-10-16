@@ -28,11 +28,7 @@ jobs:
         login-server: rcdemocontainerreg.azurecr.io # default: index.docker.io
         username: rcDemoContainerReg
         password: gmsXLK7AiqdFfi8FifDU72Yh7r+SWbbM
-
     - run: |
-        echo "------------------ Registry -----------------------------"
-        echo ${{ secrets.REGISTRY_USERNAME }}
-        echo "----------------- Building Docker Image -----------------"
         docker build . -t rcDemoContainerReg.azurecr.io/flask-container-action:latest
-        echo "----------------- Done building Docker Image -----------------"
+        echo "----------------- Done building Docker Image.. Now Pushing.... -----------------"
         docker push rcDemoContainerReg.azurecr.io/flask-container-action:latest

@@ -25,5 +25,5 @@ jobs:
         username: 'rcDemoContainerReg'
         password: ${{ secrets.ACR_PWD }}
     - run: |
-        docker build . -t rcDemoContainerReg.azurecr.io/flask-container-action:latest
-        docker push rcDemoContainerReg.azurecr.io/flask-container-action:latest
+        docker build . -t rcDemoContainerReg.azurecr.io/flask-container-action:latest:${{ github.sha }}
+        docker push rcDemoContainerReg.azurecr.io/flask-container-action:latest:${{ github.sha }}

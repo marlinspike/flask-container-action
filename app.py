@@ -8,7 +8,7 @@ def hello():
 
 @app.route('/hello/<name>')
 def hello_name(name):
-    return f"Hello, {name}!"
+    return "Hello, " + name
 
 @app.route('/version')
 def version():

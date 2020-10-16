@@ -25,5 +25,5 @@ jobs:
         username: 'rcDemoContainerReg'
         password: 'licYo80EqHQpEfktt/KPc0uUFjrvHkqe'
     - run: |
-        docker build . -t rcDemoContainerReg.azurecr.io/${{ IMAGE_NAME }}:latest
-        docker push rcDemoContainerReg.azurecr.io/${{ IMAGE_NAME }}:latest
+        docker build . -t rcDemoContainerReg.azurecr.io/${ IMAGE_NAME }:latest
+        docker push rcDemoContainerReg.azurecr.io/${ env.IMAGE_NAME }:latest

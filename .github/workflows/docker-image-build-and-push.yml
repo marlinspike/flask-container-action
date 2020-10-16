@@ -41,5 +41,5 @@ jobs:
         image: rcdemocontainerreg.azurecr.io/rcapps/flask-container-action:latest
         registry-username: ${{ secrets.REGISTRY_USERNAME }}
         registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-        name: flask-container-action
+        name: democi
         location: 'east us'

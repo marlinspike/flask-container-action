@@ -26,12 +26,11 @@ jobs:
       
     - uses: azure/docker-login@v1
       with:
-        login-server: rcdemocontainerreg.azurecr.io # default: index.docker.io
+        login-server: rcdemoregistry.azurecr.io # default: index.docker.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
-    - run:
+    - run: |
         docker build . -t rcdemocontainerreg.azurecr.io/rcapps/flask-container-action:latest
-    - run:
         docker push rcdemocontainerreg.azurecr.io/rcapps/flask-container-action:latest
 
     - name: 'Deploy to Azure Container Instances'

@@ -37,10 +37,10 @@ jobs:
       uses: 'azure/aci-deploy@v1'
       with:
         resource-group: DevLab
-        dns-name-label: flaskdemo
+        dns-name-label: flaskacidemo
         image: rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
         registry-login-server: rcdemoregistry.azurecr.io
         registry-username: ${{ secrets.REGISTRY_USERNAME }}
         registry-password: ${{ secrets.REGISTRY_PASSWORD }}
         name: democi
-        location: 'east us'
+        location: 'east us2'

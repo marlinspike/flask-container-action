@@ -30,8 +30,8 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
-        docker build . -t rcdemocontainerreg.azurecr.io/rcapps/flask-container-action:latest
-        docker push rcdemocontainerreg.azurecr.io/rcapps/flask-container-action:latest
+        docker build . -t rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
+        docker push rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
 
     - name: 'Deploy to Azure Container Instances'
       uses: 'azure/aci-deploy@v1'

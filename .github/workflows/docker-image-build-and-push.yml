@@ -21,8 +21,9 @@ jobs:
         creds: ${{ secrets.AZ_CREDS }}
     
     - uses: actions/checkout@v2
+    
     - name: Install Python 3
-        uses: actions/setup-python@v2
+    - uses: actions/setup-python@v2
         with:
           python-version: 3.8
     - name: Install dependencies

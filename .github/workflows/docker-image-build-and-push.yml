@@ -35,7 +35,6 @@ jobs:
     #- name: Build the Docker image
       #run: docker build . --file Dockerfile --tag '${{ IMAGE_NAME }}:latest'
 
-    
     - uses: azure/docker-login@v1
       with:
         login-server: rcdemoregistry.azurecr.io # default: index.docker.io

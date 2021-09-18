@@ -25,11 +25,6 @@ jobs:
       with:
         python-version: 3.8
 
-    - name: Install dependencies
-    - run: pip install -r requirements.txt
-
-    - name: Test with pytest
-      run: pytest -vv
 
     - uses: azure/docker-login@v1
       with:

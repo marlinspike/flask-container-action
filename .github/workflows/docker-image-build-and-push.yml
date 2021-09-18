@@ -32,8 +32,6 @@ jobs:
 
     - name: Test with pytest
       run: pytest -vv
-    #- name: Build the Docker image
-      #run: docker build . --file Dockerfile --tag '${{ IMAGE_NAME }}:latest'
 
     - uses: azure/docker-login@v1
       with:

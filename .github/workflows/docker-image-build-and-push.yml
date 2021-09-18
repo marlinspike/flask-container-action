@@ -26,7 +26,19 @@ jobs:
         python-version: 3.8
     #- name: Build the Docker image
       #run: docker build . --file Dockerfile --tag '${{ IMAGE_NAME }}:latest'
-      
+
+    - name: Install Python dependencies
+      run: |
+        sudo apt install -y $(grep -o ^[^#][[:alnum:]-]* "packages.list")
+        python3 -m pip install --upgrade pip
+        pip3 install -r requirements.txt
+
+    - name: Test with pytest
+      run: |
+        pytest --exitfirst --verbose --failed-first \
+        --cov=. --cov-report html
+
+    
     - uses: azure/docker-login@v1
       with:
         login-server: rcdemoregistry.azurecr.io # default: index.docker.io

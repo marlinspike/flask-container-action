@@ -21,17 +21,9 @@ jobs:
         creds: ${{ secrets.AZ_CREDS }}
     
     - uses: actions/checkout@v2
-    
-    - name: Install Python 3
-    - uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-    - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-    - name: Run tests with pytest
-        run: pytest
+     - uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
     #- name: Build the Docker image
       #run: docker build . --file Dockerfile --tag '${{ IMAGE_NAME }}:latest'
       

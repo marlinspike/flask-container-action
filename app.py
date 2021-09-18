@@ -10,6 +10,13 @@ def hello():
 def hello_name(name):
     return "Hello, " + name
 
+
+@app.route('/universe')
+def universe():
+    return "42"
+
+
+
 @app.route('/version')
 def version():
     return "v3"

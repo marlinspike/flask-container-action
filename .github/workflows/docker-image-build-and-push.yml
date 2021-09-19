@@ -36,6 +36,12 @@ jobs:
     - run: |
         docker build . -t rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
         docker push rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
+    
+    - uses: azure/container-scan@v0
+      with:
+        image-name: rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest # ${{ env.loginServerUrl }}/ would be empty if it's hosted on dockerhub; ${{ github.sha }} could also be replaced with any desired image tag
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - name: 'Deploy to Azure Container Instances'
       uses: 'azure/aci-deploy@v1'

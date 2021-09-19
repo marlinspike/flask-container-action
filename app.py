@@ -15,6 +15,9 @@ def universe():
 @app.route('/add/<int:num1>/<int:num2>')
 def add(num1, num2):
     sum = num1 + num2
+    message = f"{num1} + {num2} = {sum}"
+    return render_template('index.html', msg=message, title="Hello from a Docker Container!")
+
     return f"{sum}"
 
 if __name__ == '__main__':

@@ -1,10 +1,10 @@
 from app import app 
 
-def test_hello_name():
-    response = app.test_client().get('/hello/reuben')
+def test_add_numbers():
+    response = app.test_client().get('/add/3/2')
 
     assert response.status_code == 200
-    assert response.data == b'Hello, reuben'
+    assert response.data == b'5'
 
 
 

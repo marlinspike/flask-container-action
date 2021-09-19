@@ -17,5 +17,10 @@ def hello_name(name):
 def universe():
     return "42"
 
+@app.route('/add/<int:num1>/<int:num2>')
+def add(num1, num2):
+    sum = num1 + num2
+    return f"{sum}"
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="0.0.0.0", port=81)

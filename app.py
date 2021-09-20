@@ -24,5 +24,10 @@ def add(num1, num2):
     return render_template('index.html', msg=message, title="Hello from a Docker Container!")
 
 
+@app.route('/txtadd/<int:num1>/<int:num2>')
+def txtadd(num1, num2):
+    sum = num1 + num2
+    return f"{sum}"
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=80)

@@ -1,0 +1,96 @@
+name: Docker Image CI
+
+env:
+  IMAGE_NAME: flask-container-action
+  IMAGE_TAG: latest
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZ_CREDS }}
+    
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - run: pip install -r requirements.txt
+    - run: pytest -vv
+
+    - uses: azure/docker-login@v1
+      with:
+        login-server: rcdemoregistry.azurecr.io # default: index.docker.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - run: |
+        docker build . -t rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
+        docker push rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
+    
+    - uses: azure/container-scan@v0
+      with:
+        image-name: rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest # ${{ env.loginServerUrl }}/ would be empty if it's hosted on dockerhub; ${{ github.sha }} could also be replaced with any desired image tag
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - name: 'Deploy to Azure Container Instances'
+      uses: 'azure/aci-deploy@v1'
+      with:
+        resource-group: DevLab
+        dns-name-label: flaskacidemo
+        image: rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
+        registry-login-server: rcdemoregistry.azurecr.io
+        registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        name: democi
+        location: 'east us2'
+
+    - name: Azure Kubernetes set context
+      uses: Azure/aks-set-context@v1.1
+      with:
+        # Azure credentials i.e. output of `az ad sp create-for-rbac --sdk-auth`
+        creds: ${{ secrets.AZ_CREDS }}
+        # Resource Group Name
+        resource-group: Demo
+        # AKS Cluster Name
+        cluster-name: rcdemoaks
+    
+    - name: Create secret in Kubernetes cluster
+      uses: Azure/k8s-create-secret@v1.1
+      with:
+        # Container registry url
+        container-registry-url: rcdemoregistry.azurecr.io
+        # Container registry username
+        container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        # Container registry password
+        container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        # Type of Kubernetes secret. For example, docker-registry or generic
+        secret-type: docker-registry
+        # Name of the secret. You can use this secret name in the Kubernetes YAML configuration file.
+        secret-name: docker-image-pull-secret
+        # Specify keys and literal values to insert in generic type secret.For example, --from-literal=key1=value1 --from-literal=key2="top secret".
+
+
+    - name: Deploy to Kubernetes cluster
+      uses: Azure/k8s-deploy@v1.3
+      with:
+        # Path to the manifest files which will be used for deployment.
+        manifests: |
+          k8s/deployment.yaml
+          k8s/service.yaml
+        # Fully qualified resource URL of the image(s) to be used for substitutions on the manifest files Example: contosodemo.azurecr.io/helloworld:test
+        images: rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
+        # Name of a docker-registry secret that has already been set up within the cluster. Each of these secret names are added under imagePullSecrets field for the workloads found in the input manifest files
+        imagepullsecrets: docker-image-pull-secret
+        # deploy/promote/reject
+        action: deploy

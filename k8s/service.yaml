@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fca
+spec:
+  selector:
+    app: fca
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80

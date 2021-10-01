@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fca
+spec:
+  selector:
+    matchLabels:
+      app: fca
+  template:
+    metadata:
+      labels:
+        app: fca
+    spec:
+      containers:
+      - name: fca
+        image: rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80

@@ -47,9 +47,9 @@ jobs:
         # Azure credentials i.e. output of `az ad sp create-for-rbac --sdk-auth`
         creds: ${{ secrets.AZ_CREDS }}
         # Resource Group Name
-        resource-group: Demo
+        resource-group: aks
         # AKS Cluster Name
-        cluster-name: rcdemoaks
+        cluster-name: rckluster
     
     - name: Create secret in Kubernetes cluster
       uses: Azure/k8s-create-secret@v1.1

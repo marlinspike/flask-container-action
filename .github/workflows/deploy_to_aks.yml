@@ -10,7 +10,7 @@ on:
 jobs:
 
   build:
-    runs-on: ubuntu-5
+    runs-on:ubuntu-latest
     steps:
     - uses: azure/login@v1
       with:
@@ -47,7 +47,7 @@ jobs:
         # Azure credentials i.e. output of `az ad sp create-for-rbac --sdk-auth`
         creds: ${{ secrets.AZ_CREDS }}
         # Resource Group Name
-        resource-group: aks
+        resource-group: Demo
         # AKS Cluster Name
         cluster-name: rckluster
     

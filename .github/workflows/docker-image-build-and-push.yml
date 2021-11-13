@@ -46,7 +46,7 @@ jobs:
     - name: 'Deploy to Azure Container Instances'
       uses: 'azure/aci-deploy@v1'
       with:
-        resource-group: DevLab
+        resource-group: aks
         dns-name-label: flaskacidemo
         image: rcregistry.azurecr.io/fca:5
         registry-login-server: rcregistry.azurecr.io

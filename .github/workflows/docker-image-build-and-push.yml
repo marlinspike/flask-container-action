@@ -2,7 +2,7 @@ name: Docker Image CI
 
 env:
   IMAGE_NAME: flask-container-action
-  IMAGE_TAG: latest
+  IMAGE_TAG: 5
 
 on:
   workflow_dispatch:
@@ -30,16 +30,16 @@ jobs:
 
     - uses: azure/docker-login@v1
       with:
-        login-server: rcdemoregistry.azurecr.io # default: index.docker.io
+        login-server: rcregistry.azurecr.io # default: index.docker.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
-        docker build . -t rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
-        docker push rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
+        docker build . -t rcregistry.azurecr.io/fca:5
+        docker push rcregistry.azurecr.io/fca:5
     
     - uses: azure/container-scan@v0
       with:
-        image-name: rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest # ${{ env.loginServerUrl }}/ would be empty if it's hosted on dockerhub; ${{ github.sha }} could also be replaced with any desired image tag
+        image-name: rcregistry.azurecr.io/fca:5 # ${{ env.loginServerUrl }}/ would be empty if it's hosted on dockerhub; ${{ github.sha }} could also be replaced with any desired image tag
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
@@ -48,9 +48,19 @@ jobs:
       with:
         resource-group: DevLab
         dns-name-label: flaskacidemo
-        image: rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
-        registry-login-server: rcdemoregistry.azurecr.io
+        image: rcregistry.azurecr.io/fca:5
+        registry-login-server: rcregistry.azurecr.io
         registry-username: ${{ secrets.REGISTRY_USERNAME }}
         registry-password: ${{ secrets.REGISTRY_PASSWORD }}
         name: democi
         location: 'east us2'
+
+    # Create image pull secret for ACR
+    - uses: azure/k8s-create-secret@v1
+      with:
+        container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
+        container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        secret-name: ${{ env.SECRET }}
+        namespace: ${{ env.NAMESPACE }}
+        arguments: --force true

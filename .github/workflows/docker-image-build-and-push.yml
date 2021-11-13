@@ -42,6 +42,21 @@ jobs:
         name: Security report
         path: output/security_report.txt
 
+    # Code Coverage
+    - name: Generate coverage report
+      run: |
+        pip install pytest
+        pip install pytest-cov
+        pytest --cov=./ --cov-report=xml
+
+    - name: "Upload coverage to Codecov"
+      uses: codecov/codecov-action@v2
+      with:
+        fail_ci_if_error: false
+        verbose: true
+        token: ${{ secrets.CODECOV_TOKEN }} 
+
+
     #Docker Login
     - uses: azure/docker-login@v1
       with:

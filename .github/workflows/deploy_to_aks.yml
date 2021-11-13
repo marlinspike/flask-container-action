@@ -24,6 +24,21 @@ jobs:
     - run: pip install -r requirements.txt
     - run: pytest -vv
 
+    #Security Check - Bandit
+    - uses: actions/checkout@v2
+    - name: Security check - Bandit
+      uses: ioggstream/bandit-report-artifacts@v0.0.2
+      with:
+        project_path: .
+        ignore_failure: true
+
+    - name: Security check report artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: Security report
+        path: output/security_report.txt
+
+    #Docker Login
     - uses: azure/docker-login@v1
       with:
         login-server: rcregistry.azurecr.io # default: index.docker.io
@@ -33,14 +48,14 @@ jobs:
         docker build . -t rcregistry.azurecr.io/fca:5
         docker push rcregistry.azurecr.io/fca:5
     
+    #Container Scan
     - uses: azure/container-scan@v0
       with:
         image-name: rcregistry.azurecr.io/fca:5 # ${{ env.loginServerUrl }}/ would be empty if it's hosted on dockerhub; ${{ github.sha }} could also be replaced with any desired image tag
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
-# Removed deploy to ACI
-
+    #Set K8S context
     - name: Azure Kubernetes set context
       uses: Azure/aks-set-context@v1.1
       with:
@@ -51,6 +66,7 @@ jobs:
         # AKS Cluster Name
         cluster-name: rckluster
     
+    #Create K8S Secret
     - name: Create secret in Kubernetes cluster
       uses: Azure/k8s-create-secret@v1.1
       with:
@@ -67,6 +83,7 @@ jobs:
         # Specify keys and literal values to insert in generic type secret.For example, --from-literal=key1=value1 --from-literal=key2="top secret".
 
 
+    #Deploy to K8S Cluster
     - name: Deploy to Kubernetes cluster
       uses: Azure/k8s-deploy@v1.3
       with:

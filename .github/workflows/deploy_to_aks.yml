@@ -2,7 +2,7 @@ name: Deploy to AKS
 
 env:
   IMAGE_NAME: fca
-  IMAGE_TAG: {{github.run_number}}
+  IMAGE_TAG: ${{github.run_number}}
 
 on:
   workflow_dispatch:

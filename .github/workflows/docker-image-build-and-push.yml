@@ -28,6 +28,21 @@ jobs:
     - run: pip install -r requirements.txt
     - run: pytest -vv
 
+    #Security Check - Bandit
+    - uses: actions/checkout@v2
+    - name: Security check - Bandit
+      uses: ioggstream/bandit-report-artifacts@v0.0.2
+      with:
+        project_path: .
+        ignore_failure: true
+
+    - name: Security check report artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: Security report
+        path: output/security_report.txt
+
+    #Docker Login
     - uses: azure/docker-login@v1
       with:
         login-server: rcregistry.azurecr.io # default: index.docker.io
@@ -37,12 +52,14 @@ jobs:
         docker build . -t rcregistry.azurecr.io/fca:5
         docker push rcregistry.azurecr.io/fca:5
     
+    #Container Scan
     - uses: azure/container-scan@v0
       with:
         image-name: rcregistry.azurecr.io/fca:5 # ${{ env.loginServerUrl }}/ would be empty if it's hosted on dockerhub; ${{ github.sha }} could also be replaced with any desired image tag
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
+    #Deploy ACI
     - name: 'Deploy to Azure Container Instances'
       uses: 'azure/aci-deploy@v1'
       with:

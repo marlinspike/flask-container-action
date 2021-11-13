@@ -58,7 +58,6 @@ jobs:
 
 
     #Docker Login
-    - uses: actions/checkout@v2
     - name: Docker Images Build And Push
       uses: azure/docker-login@v1
       with:

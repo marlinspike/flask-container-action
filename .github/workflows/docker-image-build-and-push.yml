@@ -2,7 +2,7 @@ name: Docker Image CI
 
 env:
   IMAGE_NAME: flask-container-action
-  IMAGE_TAG: 5
+  IMAGE_TAG: ${{github.run_number}}
 
 on:
   workflow_dispatch:
@@ -64,13 +64,13 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
-        docker build . -t rcregistry.azurecr.io/fca:5
-        docker push rcregistry.azurecr.io/fca:5
+        docker build . -t rcregistry.azurecr.io/fca:{{ env.IMAGE_TAG}}
+        docker push rcregistry.azurecr.io/fca:{{ env.IMAGE_TAG}}
     
     #Container Scan
     - uses: azure/container-scan@v0
       with:
-        image-name: rcregistry.azurecr.io/fca:5 # ${{ env.loginServerUrl }}/ would be empty if it's hosted on dockerhub; ${{ github.sha }} could also be replaced with any desired image tag
+        image-name: rcregistry.azurecr.io/fca:{{ env.IMAGE_TAG}} # ${{ env.loginServerUrl }}/ would be empty if it's hosted on dockerhub; ${{ github.sha }} could also be replaced with any desired image tag
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
@@ -80,7 +80,7 @@ jobs:
       with:
         resource-group: aks
         dns-name-label: flaskacidemo
-        image: rcregistry.azurecr.io/fca:5
+        image: rcregistry.azurecr.io/fca:{{ env.IMAGE_TAG}}
         registry-login-server: rcregistry.azurecr.io
         registry-username: ${{ secrets.REGISTRY_USERNAME }}
         registry-password: ${{ secrets.REGISTRY_PASSWORD }}

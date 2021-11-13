@@ -54,13 +54,3 @@ jobs:
         registry-password: ${{ secrets.REGISTRY_PASSWORD }}
         name: democi
         location: 'east us2'
-
-    # Create image pull secret for ACR
-    - uses: azure/k8s-create-secret@v1
-      with:
-        container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
-        container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
-        container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-        secret-name: ${{ env.SECRET }}
-        namespace: ${{ env.NAMESPACE }}
-        arguments: --force true

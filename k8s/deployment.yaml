@@ -13,10 +13,10 @@ spec:
     spec:
       containers:
       - name: fca
-        image: rcdemoregistry.azurecr.io/rcapps/flask-container-action:latest
+        image: rcgegistry.azurecr.io/fca:latest
         resources:
           limits:
             memory: "128Mi"
-            cpu: "500m"
+            cpu: "100m"
         ports:
         - containerPort: 80

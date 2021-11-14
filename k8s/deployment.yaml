@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: fca
-        image: rcgegistry.azurecr.io/fca:latest
+        image: rcregistry.azurecr.io/fca:latest
         resources:
           limits:
             memory: "128Mi"

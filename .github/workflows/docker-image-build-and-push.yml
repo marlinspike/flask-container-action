@@ -65,8 +65,9 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
-        docker build . -t rcregistry.azurecr.io/fca:${{github.run_number}}
+        docker build . -t rcregistry.azurecr.io/fca:${{github.run_number}} -t rcregistry.azurecr.io/fca:latest
         docker push rcregistry.azurecr.io/fca:${{github.run_number}}
+        docker push rcregistry.azurecr.io/fca:latest
     
     #Container Scan
     - name: Container Scan

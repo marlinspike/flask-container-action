@@ -21,8 +21,11 @@ jobs:
       with:
         python-version: 3.8
 
-    - run: pip install -r requirements.txt
-    - run: pytest -vv
+    - name: Install requirements
+      run: pip install -r requirements.txt
+
+    - name: Run automated tests  
+      run: pytest -vv
 
     #Security Check - Bandit
     - uses: actions/checkout@v2

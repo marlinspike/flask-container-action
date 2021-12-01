@@ -28,7 +28,7 @@ jobs:
       run: pytest -vv
 
   Security_Check:
-    needs: Install_Requirements
+    needs: build
     runs-on: ubuntu-latest
     steps:
     #Security Check - Bandit

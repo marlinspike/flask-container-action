@@ -38,11 +38,6 @@ jobs:
       with:
         project_path: .
         ignore_failure: true
-
-  Upload_Security_Artifacts:
-    needs: Security_Check
-    runs-on: ubuntu-latest
-    steps:
     - name: Security check report artifacts
       uses: actions/upload-artifact@v1
       with:
@@ -111,11 +106,7 @@ jobs:
         resource-group: aks
         # AKS Cluster Name
         cluster-name: rckluster
-  
-  Create_K8S_Secret:
-    needs: Set_Kubernetes_Context
-    runs-on: ubuntu-latest
-    steps:
+
     #Create K8S Secret
     - name: Create secret in Kubernetes cluster
       uses: Azure/k8s-create-secret@v1.1
@@ -134,7 +125,7 @@ jobs:
 
 
   Deploy_To_AKS:
-    needs: Create_K8S_Secret
+    needs: Set_Kubernetes_Context
     runs-on: ubuntu-latest
     steps:
     #Deploy to K8S Cluster

@@ -22,6 +22,7 @@ jobs:
         python-version: 3.8
 
   Install_Requirements:
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - name: Install requirements
@@ -31,6 +32,7 @@ jobs:
       run: pytest -vv
 
   Security_Check:
+    needs: Install_Requirements
     runs-on: ubuntu-latest
     steps:
     #Security Check - Bandit
@@ -42,6 +44,7 @@ jobs:
         ignore_failure: true
 
   Upload_Security_Artifacts:
+    needs: Security_Check
     runs-on: ubuntu-latest
     steps:
     - name: Security check report artifacts
@@ -51,6 +54,7 @@ jobs:
         path: output/security_report.txt
 
   Generate_Coverage_Report:
+    needs: Upload_Security_Artifacts
     runs-on: ubuntu-latest
     steps:
     # Code Coverage
@@ -60,7 +64,8 @@ jobs:
         pip install pytest-cov
         pytest --cov=./ --cov-report=xml
 
-  Upload_Coverage_Reprot:
+  Upload_Coverage_Report:
+    needs: Generate_Coverage_Report
     runs-on: ubuntu-latest
     steps:
     - name: "Upload coverage to Codecov"
@@ -71,6 +76,7 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }} 
 
   Docker_Login:
+    needs: Security_Check
     runs-on: ubuntu-latest
     steps:
     #Docker Login
@@ -86,6 +92,7 @@ jobs:
         docker push rcregistry.azurecr.io/fca:latest
 
   Container_Scan:
+    needs: Docker_Login
     runs-on: ubuntu-latest
     steps:    
     #Container Scan
@@ -97,6 +104,7 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
   Set_Kubernetes_Context:
+    needs: Container_Scan
     runs-on: ubuntu-latest
     steps:
     #Set K8S context
@@ -111,6 +119,7 @@ jobs:
         cluster-name: rckluster
   
   Create_K8S_Secret:
+    needs: Set_Kubernetes_Context
     runs-on: ubuntu-latest
     steps:
     #Create K8S Secret
@@ -131,6 +140,7 @@ jobs:
 
 
   Deploy_To_AKS:
+    needs: Create_K8S_Secret
     runs-on: ubuntu-latest
     steps:
     #Deploy to K8S Cluster

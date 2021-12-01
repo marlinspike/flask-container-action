@@ -21,10 +21,6 @@ jobs:
       with:
         python-version: 3.8
 
-  Install_Requirements:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
     - name: Install requirements
       run: pip install -r requirements.txt
 

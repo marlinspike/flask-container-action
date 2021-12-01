@@ -21,12 +21,18 @@ jobs:
       with:
         python-version: 3.8
 
+  Install_Requirements:
+    runs-on: ubuntu-latest
+    steps:
     - name: Install requirements
       run: pip install -r requirements.txt
 
     - name: Run automated tests  
       run: pytest -vv
 
+  Security_Check:
+    runs-on: ubuntu-latest
+    steps:
     #Security Check - Bandit
     - uses: actions/checkout@v2
     - name: Security check - Bandit
@@ -35,12 +41,18 @@ jobs:
         project_path: .
         ignore_failure: true
 
+  Upload_Security_Artifacts:
+    runs-on: ubuntu-latest
+    steps:
     - name: Security check report artifacts
       uses: actions/upload-artifact@v1
       with:
         name: Security report
         path: output/security_report.txt
 
+  Generate_Coverage_Report:
+    runs-on: ubuntu-latest
+    steps:
     # Code Coverage
     - name: Generate coverage report
       run: |
@@ -48,6 +60,9 @@ jobs:
         pip install pytest-cov
         pytest --cov=./ --cov-report=xml
 
+  Upload_Coverage_Reprot:
+    runs-on: ubuntu-latest
+    steps:
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v2
       with:
@@ -55,6 +70,9 @@ jobs:
         verbose: true
         token: ${{ secrets.CODECOV_TOKEN }} 
 
+  Docker_Login:
+    runs-on: ubuntu-latest
+    steps:
     #Docker Login
     - name: Docker Images Build And Push
       uses: azure/docker-login@v1
@@ -66,7 +84,10 @@ jobs:
         docker build . -t rcregistry.azurecr.io/fca:${{github.run_number}} -t rcregistry.azurecr.io/fca:latest
         docker push rcregistry.azurecr.io/fca:${{github.run_number}}
         docker push rcregistry.azurecr.io/fca:latest
-    
+
+  Container_Scan:
+    runs-on: ubuntu-latest
+    steps:    
     #Container Scan
     - name: Container Scan
       uses: azure/container-scan@v0
@@ -75,6 +96,9 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
+  Set_Kubernetes_Context:
+    runs-on: ubuntu-latest
+    steps:
     #Set K8S context
     - name: Azure Kubernetes set context
       uses: Azure/aks-set-context@v1.1
@@ -85,7 +109,10 @@ jobs:
         resource-group: aks
         # AKS Cluster Name
         cluster-name: rckluster
-    
+  
+  Create_K8S_Secret:
+    runs-on: ubuntu-latest
+    steps:
     #Create K8S Secret
     - name: Create secret in Kubernetes cluster
       uses: Azure/k8s-create-secret@v1.1
@@ -103,6 +130,9 @@ jobs:
         # Specify keys and literal values to insert in generic type secret.For example, --from-literal=key1=value1 --from-literal=key2="top secret".
 
 
+  Deploy_To_AKS:
+    runs-on: ubuntu-latest
+    steps:
     #Deploy to K8S Cluster
     - name: Deploy to Kubernetes cluster
       uses: Azure/k8s-deploy@v1.3

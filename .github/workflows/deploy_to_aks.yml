@@ -52,7 +52,7 @@ jobs:
     # Code Coverage
     - name: Generate coverage report
       run: |
-        run: pip install -r requirements.txt
+        pip install -r requirements.txt
         pip install pytest
         pip install pytest-cov
         pytest --cov=./ --cov-report=xml

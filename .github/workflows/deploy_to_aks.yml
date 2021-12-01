@@ -45,7 +45,7 @@ jobs:
         path: output/security_report.txt
 
   Generate_Coverage_Report:
-    needs: Upload_Security_Artifacts
+    needs: Security_Check
     runs-on: ubuntu-latest
     steps:
     # Code Coverage

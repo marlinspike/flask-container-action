@@ -48,6 +48,7 @@ jobs:
     needs: Security_Check
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     # Code Coverage
     - name: Generate coverage report
       run: |
@@ -91,7 +92,7 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
-  Set_Kubernetes_Context:
+  Deploy_To_AKS:
     needs: Docker_Build_And_Scan
     runs-on: ubuntu-latest
     steps:
@@ -123,11 +124,6 @@ jobs:
         secret-name: docker-image-pull-secret
         # Specify keys and literal values to insert in generic type secret.For example, --from-literal=key1=value1 --from-literal=key2="top secret".
 
-
-  Deploy_To_AKS:
-    needs: Set_Kubernetes_Context
-    runs-on: ubuntu-latest
-    steps:
     #Deploy to K8S Cluster
     - name: Deploy to Kubernetes cluster
       uses: Azure/k8s-deploy@v1.3

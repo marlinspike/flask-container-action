@@ -71,10 +71,11 @@ jobs:
         verbose: true
         token: ${{ secrets.CODECOV_TOKEN }} 
 
-  Docker_Login:
+  Docker_Build_And_Scan:
     needs: Security_Check
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     #Docker Login
     - name: Docker Images Build And Push
       uses: azure/docker-login@v1
@@ -86,11 +87,7 @@ jobs:
         docker build . -t rcregistry.azurecr.io/fca:${{github.run_number}} -t rcregistry.azurecr.io/fca:latest
         docker push rcregistry.azurecr.io/fca:${{github.run_number}}
         docker push rcregistry.azurecr.io/fca:latest
-
-  Container_Scan:
-    needs: Docker_Login
-    runs-on: ubuntu-latest
-    steps:    
+ 
     #Container Scan
     - name: Container Scan
       uses: azure/container-scan@v0
@@ -100,9 +97,10 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
   Set_Kubernetes_Context:
-    needs: Container_Scan
+    needs: Docker_Build_And_Scan
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     #Set K8S context
     - name: Azure Kubernetes set context
       uses: Azure/aks-set-context@v1.1

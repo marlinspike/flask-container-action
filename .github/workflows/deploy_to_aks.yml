@@ -92,6 +92,14 @@ jobs:
         image-name: rcregistry.azurecr.io/fca:${{github.run_number}} # ${{ env.loginServerUrl }}/ would be empty if it's hosted on dockerhub; ${{ github.sha }} could also be replaced with any desired image tag
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
+    
+    #SBOM
+    - name: Anchore SBOM
+    - uses: anchore/sbom-action@v0
+      with:
+        image: rcregistry.azurecr.io/fca:${{github.run_number}} # ${{ env.loginServerUrl }}/ would be empty if it's hosted on docke
+        registry-username: ${{ secrets.REGISTRY_USERNAME }}
+        registry-password: ${{ secrets.REGISTRY_PASSWORD }}
 
   Deploy_To_AKS:
     needs: Docker_Build_And_Scan

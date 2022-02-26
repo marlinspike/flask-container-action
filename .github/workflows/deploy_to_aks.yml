@@ -97,7 +97,7 @@ jobs:
     - name: Anchore SBOM
       uses: anchore/sbom-action@v0
       with:
-        image: rcregistry.azurecr.io/fca:${{github.run_number}} # ${{ env.loginServerUrl }}/ would be empty if it's hosted on docke
+        image: rcregistry.azurecr.io/fca # ${{ env.loginServerUrl }}/ would be empty if it's hosted on docke
         registry-username: ${{ secrets.REGISTRY_USERNAME }}
         registry-password: ${{ secrets.REGISTRY_PASSWORD }}
 

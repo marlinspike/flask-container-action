@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: fca
-        image: shuffereu/fca:2
+        image: shuffereu/fca:3
         imagePullPolicy: Always
         resources:
           limits:

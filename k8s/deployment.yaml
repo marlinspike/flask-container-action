@@ -14,6 +14,7 @@ spec:
       containers:
       - name: fca
         image: shuffereu/fca:1
+        imagePullPolicy: Always
         resources:
           limits:
             memory: "128Mi"

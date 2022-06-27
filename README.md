@@ -1,6 +1,10 @@
 # GitHub Actions with Azure Container Registry and Azure Container Instances
 This demo shows how to build a Docker container from a Python Flask app, push it to an Azure Container Registry, and then run the container on an Azure Container Instance. 
 
+## DevSecOps Actions
+This project implements DoD DevSecOps for PaaS Enterprise Applications. DevOps or DevSecOps is fundamental to any but the most trivial projects.
+![Actions Implemented](https://i.imgur.com/Gv3FnRB.png)
+
 The Actions included create a full **DevSecOps pipeline** to deploy to an AKS Cluster or an Azure Container Instance. The pipelines follow the guidelines of **DoD DevSecOps**, implementing:
 
 - Code Scanning
@@ -66,7 +70,3 @@ GitHub Secrets to create:
 
 ## Step 7: Create the GitHub Action YAML Script
 The script supplied in the workflows folder should work if you've followed the directions accurately.
-
-## DevSecOps Actions
-This project implements DoD DevSecOps for PaaS Enterprise Applications. DevOps or DevSecOps is fundamental to any but the most trivial projects.
-!(Actions Implemented)[https://i.imgur.com/Gv3FnRB.png]

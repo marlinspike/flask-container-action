@@ -66,3 +66,7 @@ GitHub Secrets to create:
 
 ## Step 7: Create the GitHub Action YAML Script
 The script supplied in the workflows folder should work if you've followed the directions accurately.
+
+## DevSecOps Actions
+This project implements DoD DevSecOps for PaaS Enterprise Applications. DevOps or DevSecOps is fundamental to any but the most trivial projects.
+!(Actions Implemented)[https://i.imgur.com/Gv3FnRB.png]

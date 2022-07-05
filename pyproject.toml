@@ -1,0 +1,34 @@
+[project]
+name = "Flask-Container-Action"
+version = "1.1.0"
+description = "Flask-Container-Action is a Python/Flask app that demonstrates the DISA Azure PaaS DevSecOps Ref Design, and deploys to ACI and AKS"
+readme = "README.md"
+requires-python = ">=3.6.2"
+license = {file = "LICENSE"}
+keywords = ["azure", "paas", "devsecops", "dsop", "kubernetes", "flask"]
+authors = [
+  {name = "Reuben Cleetus"}
+]
+maintainers = [
+  {name = "Reuben Cleetus"}
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python"
+]
+
+dependencies = [
+  "click==8.1.3",
+  "pytest",
+  "Flask==2.1.2"
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=6.2.5,<=7.1.2",
+  "pytest-cov[all]"
+]
+
+[project.urls]
+documentation = "https://github.com/marlinspike/flask-container-action/blob/master/README.md"
+repository = "https://github.com/marlinspike/flask-container-action"

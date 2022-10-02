@@ -28,15 +28,15 @@ jobs:
       run: pytest -vv
 
 
-  Dependency-Review:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Checkout Repository'
-        uses: actions/checkout@v3
-      - name: Dependency Review
-        uses: actions/dependency-review-action@v2
-        with:
-          fail-on-severity: critical
+#  Dependency-Review:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: 'Checkout Repository'
+#        uses: actions/checkout@v3
+#      - name: Dependency Review
+#        uses: actions/dependency-review-action@v2
+#        with:
+#          fail-on-severity: critical
 
   Security_Check:
     needs: build

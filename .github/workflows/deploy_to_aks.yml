@@ -28,6 +28,16 @@ jobs:
       run: pytest -vv
 
 
+  Dependency-Review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v3
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v2
+        with:
+          fail-on-severity: critical
+
   Security_Check:
     needs: build
     runs-on: ubuntu-latest
@@ -154,7 +164,13 @@ jobs:
         # deploy/promote/reject
         action: deploy
         
+  OWASP_ZAP_SCAN:
+    needs: Docker_Build_And_Scan
+    runs-on: ubuntu-latest
+    steps:
     - name: OWASP ZAP Scan
       uses: zaproxy/action-full-scan@v0.4.0
       with:
         target: 'https://www.google.com/'
+        
+
